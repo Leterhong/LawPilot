@@ -1,0 +1,32 @@
+# LawPilot 后端依赖（与 pyproject.toml 保持一致）
+# 安装：pip install -r requirements.txt
+
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.9.0
+pydantic-settings>=2.6.0
+sqlalchemy[asyncio]>=2.0.36
+asyncpg>=0.30.0
+psycopg2-binary>=2.9.0
+alembic>=1.14.0
+redis>=5.2.0
+httpx>=0.28.0
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+# bcrypt 4.1+ 移除了 __about__ 属性，与 passlib 1.7.4 不兼容（注册/登录报 500）。
+# 实测 4.0.1 可正常工作，故固定 <4.1。
+bcrypt>=4.0.0,<4.1
+python-multipart>=0.0.12
+openai>=1.54.0
+pgvector>=0.3.0
+python-dotenv>=1.0.0
+tenacity>=9.0.0
+Pillow>=11.0.0
+
+# ---------- 开发依赖 ----------
+pytest>=8.3.0
+pytest-asyncio>=0.24.0
+ruff>=0.7.0
+
+# 证据报告 PDF 导出（CJK 字体需系统提供，如 C:/Windows/Fonts/simhei.ttf）
+reportlab>=4.0

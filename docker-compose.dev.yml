@@ -1,0 +1,33 @@
+# =============================================================
+# LawPilot 开发叠加（Dev Overlay）
+# -------------------------------------------------------------
+# 在通用基线之上，暴露各服务端口并挂载后端源码以支持热重载。
+# 用法：
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+#
+# 说明：本文件仅添加开发期便利（端口与源码挂载），不会改动镜像构建；
+#       production 环境请使用 docker-compose.prod.yml。
+# =============================================================
+services:
+  # 暴露数据库端口，便于本地后端 / 客户端直连调试
+  db:
+    ports:
+      - "5432:5432"
+
+  # 暴露 Redis 端口，便于本地调试
+  redis:
+    ports:
+      - "6379:6379"
+
+  # 暴露后端端口 + 挂载源码（uvicorn --reload 热重载）
+  backend:
+    volumes:
+      - ./backend:/app
+      - uploads:/app/uploads
+    ports:
+      - "8000:8000"
+
+  # 暴露前端端口（Next.js dev / start）
+  frontend:
+    ports:
+      - "3000:3000"

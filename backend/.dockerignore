@@ -1,0 +1,44 @@
+# =============================================================
+# LawPilot 后端 .dockerignore
+# 避免将依赖、缓存、密钥、本地数据打入镜像。
+# =============================================================
+
+# Python 缓存与编译产物
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 打包 / 虚拟环境
+.venv/
+venv/
+env/
+*.egg-info/
+.eggs/
+
+# 测试与覆盖率
+tests/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# 本地环境与密钥（容器内由 env_file / 环境变量注入）
+.env
+.env.*
+*.pem
+*.key
+
+# 本地运行数据（上传卷在运行期挂载，不打包）
+uploads/
+*.log
+
+# 版本控制 / 文档 / 编辑器
+.git/
+.gitignore
+Dockerfile
+.dockerignore
+README.md
+docs/
+.idea/
+.vscode/

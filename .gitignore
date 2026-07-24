@@ -1,0 +1,75 @@
+# -------------------------------
+# Python
+# -------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.log
+
+# -------------------------------
+# Node / Next.js
+# -------------------------------
+node_modules/
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# -------------------------------
+# 环境变量与密钥
+# -------------------------------
+.env
+.env.local
+.env.*.local
+*.pem
+secrets/
+
+# -------------------------------
+# 上传文件与数据（运行时产生）
+# -------------------------------
+data/
+uploads/
+*.pdf
+*.docx
+!**/example.*
+pgdata/
+
+# -------------------------------
+# IDE / 编辑器
+# -------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# -------------------------------
+# 系统
+# -------------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------------
+# 项目本地 / 工具数据（不入库）
+# -------------------------------
+.workbuddy
+.venv_clean
+_fork_debug.*
+*.log
+
+# -------------------------------
+# Docker 覆盖配置（本地个性化）
+# -------------------------------
+docker-compose.override.yml

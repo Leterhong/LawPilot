@@ -1,0 +1,29 @@
+# =============================================================
+# LawPilot 前端 .dockerignore
+# 避免将 node_modules、构建产物、密钥打入镜像。
+# =============================================================
+
+# 依赖与构建产物
+node_modules/
+.next/
+out/
+build/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 本地环境与密钥
+.env
+.env.*
+*.local
+
+# 版本控制 / 文档 / 编辑器
+.git/
+.gitignore
+Dockerfile
+.dockerignore
+README.md
+.eslintcache
+.idea/
+.vscode/
