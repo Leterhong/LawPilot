@@ -73,3 +73,9 @@ _fork_debug.*
 # Docker 覆盖配置（本地个性化）
 # -------------------------------
 docker-compose.override.yml
+
+# -------------------------------
+# 计划书排版模板（第三方材料，不入库）
+# 生成脚本 scripts/build_plan_docx.py 依赖该模板，本地自备
+# -------------------------------
+docs/competition/_template/

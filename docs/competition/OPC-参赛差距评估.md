@@ -54,7 +54,7 @@ LawPilot 的问题选择（普通人不会打官司、不懂维权路径）在"�
 | 后端 API 路径 / 操作 | 101 / 134 | `app.openapi()` 解析 |
 | 数据表 | 62 | `__tablename__` 计数 |
 | 前端页面 | 23 | `next build` 路由表 |
-| 源码规模 | 约 1.94 万行（py + ts/tsx） | `wc -l` |
+| 源码规模 | 约 2.03 万行（py + ts/tsx） | `wc -l` |
 | 数据库迁移 | 13 个 Alembic 版本 | `alembic/versions/` |
 | 法条种子数据 | 872 条 | `sample_data/laws*.jsonl` |
 | 案例种子数据 | 29 条 | `sample_data/legal_cases.jsonl` |
