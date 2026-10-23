@@ -9,7 +9,6 @@ from uuid import UUID
 
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.case_center import (
     CaseAnalysis,

@@ -7,7 +7,7 @@
 from __future__ import annotations
 
 import re
-from typing import Optional, Tuple
+from typing import Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -183,7 +183,7 @@ class LawSearchService:
                 self._to_out(m) for m in more
             ]
         latest = await self.law.get_latest(limit)
-        return [self._to_out(l) for l in latest]
+        return [self._to_out(item) for item in latest]
 
     # --------------------------- 历史 ---------------------------
     async def history(self, current_user: User, limit: int = 20) -> list[LawHistoryOut]:

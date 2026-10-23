@@ -9,7 +9,7 @@ from __future__ import annotations
 import base64
 import hashlib
 from functools import lru_cache
-from typing import Literal
+from typing import ClassVar, Literal
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -36,6 +36,11 @@ class Settings(BaseSettings):
     project_name: str = "LawPilot"
     api_v1_prefix: str = "/api/v1"
 
+    # 是否对外暴露 /docs、/redoc 与 /openapi.json。
+    # None = 自动策略（非生产开启、生产关闭）；显式设置则以此为准。
+    # 生产环境如需保留文档，可设 EXPOSE_DOCS=true，但应在网关层加访问控制。
+    expose_docs: bool | None = None
+
     # ---------------------------
     # 数据库
     # ---------------------------
@@ -49,8 +54,11 @@ class Settings(BaseSettings):
     )
 
     # ---------------------------
-    # Redis
+    # Redis（预留）
     # ---------------------------
+    # 说明：当前业务代码尚未接入 Redis，缓存与队列能力仍在规划中。
+    # 编排文件保留该服务是为了后续引入异步任务（如批量 OCR、长报告生成）
+    # 时无需改动部署形态。若追求最小部署面，可自行从 compose 中移除。
     redis_host: str = "redis"
     redis_port: int = 6379
     redis_password: str = ""
@@ -126,6 +134,13 @@ class Settings(BaseSettings):
         return self.environment == "production"
 
     @property
+    def docs_enabled(self) -> bool:
+        """是否暴露交互式 API 文档。生产环境默认关闭，避免接口结构对外泄露。"""
+        if self.expose_docs is not None:
+            return self.expose_docs
+        return not self.is_production
+
+    @property
     def cors_origin_list(self) -> list[str]:
         """将逗号分隔的 CORS 来源解析为列表。"""
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
@@ -143,6 +158,38 @@ class Settings(BaseSettings):
         """
         raw = (self.ai_encryption_key or self.secret_key).encode("utf-8")
         return base64.urlsafe_b64encode(hashlib.sha256(raw).digest())
+
+    # ---------------------------
+    # 生产环境自检
+    # ---------------------------
+    #: 已知的开发默认值，出现在生产环境中即为配置事故
+    INSECURE_DEFAULTS: ClassVar[dict[str, str]] = {
+        "secret_key": "dev_secret_change_me",
+        "postgres_password": "lawpilot_secret",
+    }
+
+    def validate_for_production(self) -> list[str]:
+        """返回生产环境下的致命配置问题列表（空列表表示通过）。
+
+        这里只拦截"必然导致安全事故"的项，避免过度校验让部署变脆：
+        - 使用文档里公开的开发默认密钥 / 密码；
+        - SECRET_KEY 过短（HS256 下低于 32 字符不足以保证抗暴力破解）。
+        """
+        problems: list[str] = []
+        if not self.is_production:
+            return problems
+
+        for field_name, insecure in self.INSECURE_DEFAULTS.items():
+            if getattr(self, field_name) == insecure:
+                problems.append(f"{field_name.upper()} 仍为开发默认值「{insecure}」，必须覆盖")
+
+        if len(self.secret_key) < 32:
+            problems.append("SECRET_KEY 长度不足 32 字符，请使用 openssl rand -hex 32 生成")
+
+        if "*" in self.cors_origin_list:
+            problems.append("CORS_ORIGINS 不允许配置通配符 *（与 allow_credentials 冲突且不安全）")
+
+        return problems
 
 
 @lru_cache

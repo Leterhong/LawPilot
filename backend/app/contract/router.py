@@ -29,16 +29,16 @@ from __future__ import annotations
 import os
 import uuid
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, status, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.contract.parser import is_supported, parse_contract_file
-from app.contract.service import ContractService
 from app.contract.analyzer import analyze_contract
+from app.contract.parser import is_supported, parse_contract_file
 from app.contract.report import generate_report
+from app.contract.service import ContractService
 from app.core.config import settings
 from app.core.database import get_db
-from app.core.deps import get_current_user, require_superuser
+from app.core.deps import get_current_user
 from app.models.contract import CONTRACT_ALLOWED_EXTENSIONS, Contract
 from app.models.user import User
 from app.schemas.common import Page

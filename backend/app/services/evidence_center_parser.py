@@ -158,15 +158,15 @@ async def ocr_with_vision(path: str, ext: str, mgr) -> str | None:
 def ocr_with_tesseract(path: str) -> str | None:
     """回退 OCR：pytesseract。未安装 / 失败返回 None。"""
     try:
-        from PIL import Image
         import pytesseract
+        from PIL import Image
 
         text = pytesseract.image_to_string(Image.open(path), lang="chi_sim+eng")
         return text.strip() or None
     except Exception:
         try:
-            from PIL import Image
             import pytesseract
+            from PIL import Image
 
             return pytesseract.image_to_string(Image.open(path)).strip() or None
         except Exception:

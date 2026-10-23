@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import base64
 import json
-import os
 import re
 
 from app.models.contract import CONTRACT_ALLOWED_EXTENSIONS, CONTRACT_TYPES
@@ -112,8 +111,8 @@ async def ocr_with_vision(path: str, ext: str, mgr) -> str | None:
 def ocr_with_tesseract(path: str) -> str | None:
     """回退 OCR：pytesseract。未安装 / 失败返回 None。"""
     try:
-        from PIL import Image
         import pytesseract
+        from PIL import Image
 
         return pytesseract.image_to_string(Image.open(path)).strip() or None
     except Exception:

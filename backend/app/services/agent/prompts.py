@@ -8,7 +8,6 @@ from __future__ import annotations
 from typing import List
 
 from app.models.case import Case
-from app.models.enums import CaseTypeEnum
 from app.services.agent.knowledge_base import CASE_TYPE_LABELS, Question
 
 SYSTEM_PROMPT = (

@@ -17,7 +17,7 @@ AIManager 处理，本类只保留对外接口（``complete`` / ``complete_json`
 from __future__ import annotations
 
 import json
-from typing import Any, Optional
+from typing import Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
 

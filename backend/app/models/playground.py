@@ -10,10 +10,9 @@ from __future__ import annotations
 
 from datetime import datetime
 from decimal import Decimal
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from sqlalchemy import (
-    JSON,
     Boolean,
     DateTime,
     Float,
@@ -27,7 +26,6 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base, TimestampMixin, UUIDMixin
-
 
 # ---------------------------------------------------------------------------
 # 常量

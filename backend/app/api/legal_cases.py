@@ -39,9 +39,10 @@ async def optional_current_user(
     if not token:
         return None
     try:
+        from jose import JWTError
+
         from app.core.security import decode_access_token
         from app.repositories.user_repo import UserRepository
-        from jose import JWTError
 
         payload = decode_access_token(token)
         subject = payload.get("sub")

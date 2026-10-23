@@ -1,0 +1,96 @@
+# =============================================================
+# LawPilot 持续集成
+# -------------------------------------------------------------
+# 三道闸门，分别对应三类可验证性主张：
+#   1. backend-quality   —— 代码规范与单元测试（不需数据库/密钥，秒级完成）
+#   2. frontend-build     —— 类型检查与生产构建（证明前端可交付）
+#   3. docker-config      —— 编排文件语法与镜像构建可行性（证明可部署）
+# =============================================================
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend-quality:
+    name: 后端 · 规范与测试
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 静态检查（ruff）
+        run: ruff check app
+
+      - name: 单元测试（pytest）
+        # 测试设计为不依赖 PostgreSQL / Redis / LLM 密钥，可在裸环境全量运行
+        env:
+          ENVIRONMENT: test
+          SECRET_KEY: ci-secret-key-for-testing-only-0123456789
+        run: pytest -q --maxfail=1
+
+  frontend-build:
+    name: 前端 · 类型与构建
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 类型检查
+        run: npx tsc --noEmit
+
+      - name: 生产构建
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+          NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+        run: npm run build
+
+  docker-config:
+    name: 编排 · 配置校验
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 准备环境变量
+        run: cp .env.example .env
+
+      - name: 校验 Compose 基线
+        run: docker compose -f docker-compose.yml config -q
+
+      - name: 校验开发叠加
+        run: docker compose -f docker-compose.yml -f docker-compose.dev.yml config -q
+
+      - name: 校验生产叠加
+        run: docker compose -f docker-compose.yml -f docker-compose.prod.yml config -q

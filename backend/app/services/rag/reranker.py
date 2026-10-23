@@ -13,7 +13,7 @@
 from __future__ import annotations
 
 import re
-from typing import List, Tuple, TYPE_CHECKING
+from typing import TYPE_CHECKING, List, Tuple
 
 from app.core.config import settings
 

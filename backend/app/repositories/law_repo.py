@@ -11,9 +11,10 @@
 from __future__ import annotations
 
 import re
-from typing import List, Optional, Sequence, Tuple
+from typing import List, Optional, Tuple
 
-from sqlalchemy import String, case as sa_case, cast, func, or_, select
+from sqlalchemy import String, cast, func, or_, select
+from sqlalchemy import case as sa_case
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -221,7 +222,7 @@ class LawRepository:
             )
         ).scalars().all()
         sibs = sorted(sibs, key=lambda x: _article_sort_key(x.article))
-        idx = next((i for i, l in enumerate(sibs) if l.id == law.id), None)
+        idx = next((i for i, item in enumerate(sibs) if item.id == law.id), None)
         prev = sibs[idx - 1] if (idx is not None and idx > 0) else None
         nxt = sibs[idx + 1] if (idx is not None and idx + 1 < len(sibs)) else None
         return prev, nxt

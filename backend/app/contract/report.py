@@ -12,9 +12,7 @@
 """
 from __future__ import annotations
 
-import time
 from datetime import datetime, timezone
-from typing import Any
 from uuid import UUID
 
 from sqlalchemy import delete
@@ -22,7 +20,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.contract.service import ContractService
 from app.models.contract import (
-    CONTRACT_RISK_CATEGORIES,
     CONTRACT_TYPE_LABELS,
     Contract,
     ContractClause,
@@ -174,9 +171,10 @@ def build_report_markdown(
         L.append(f"- 识别风险点：共 **{len(risks)}** 项（高危 {n_high} 项 / 中危 {n_mid} 项）")
         if contract.law_involved:
             laws = "、".join(
-                f"{l.get('name', '法律')}{(' ' + l.get('article', '')) if l.get('article') else ''}"
-                for l in contract.law_involved[:8]
-                if isinstance(l, dict)
+                f"{item.get('name', '法律')}"
+                f"{(' ' + item.get('article', '')) if item.get('article') else ''}"
+                for item in contract.law_involved[:8]
+                if isinstance(item, dict)
             )
             if laws:
                 L.append(f"- 涉及法律：{laws}")

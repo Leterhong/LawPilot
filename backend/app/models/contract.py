@@ -15,7 +15,6 @@ from datetime import date, datetime
 from uuid import UUID
 
 from sqlalchemy import (
-    JSON,
     Boolean,
     Date,
     DateTime,
@@ -29,7 +28,6 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base, TimestampMixin, UUIDMixin
-
 
 # ---------------------------------------------------------------------------
 # 共享常量（Step2~Step7 复用）

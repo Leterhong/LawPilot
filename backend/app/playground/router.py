@@ -17,18 +17,30 @@ from __future__ import annotations
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.deps import get_current_user, require_superuser
+from app.models.ai_center import AIModel, RoutingRule
+from app.models.playground import (
+    EvaluationDataset,
+    EvaluationItem,
+    EvaluationResult,
+    EvaluationTask,
+)
 from app.models.user import User
 from app.playground.evaluator import run_evaluation
 from app.playground.history import (
-    create_prompt,
+    # 注意：必须用别名导入。路由函数 ``create_prompt`` 会覆盖与本模块同名的
+    # 服务函数，若不加别名，函数体内再调用 ``create_prompt`` 会触发无限递归
+    # （RecursionError），POST /api/playground/prompts 直接 500。
+    create_prompt as create_prompt_service,
+)
+from app.playground.history import (
     delete_prompt,
     list_models_for_picker,
     list_prompt_library,
-    list_publishes,
     list_sessions,
     update_prompt,
 )
@@ -52,10 +64,6 @@ from app.schemas.playground import (
     RoutingRuleSimpleOut,
 )
 from app.services.ai.manager import AIManager
-from sqlalchemy import select
-from app.models.ai_center import RoutingRule, AIModel
-from app.models.playground import EvaluationDataset, EvaluationItem
-
 
 router = APIRouter(prefix="/api/playground", tags=["playground"])
 
@@ -207,7 +215,7 @@ async def create_prompt(
     db: AsyncSession = Depends(get_db),
     current: User = Depends(get_current_user),
 ) -> PromptLibraryOut:
-    return await create_prompt(db, current.id, req)
+    return await create_prompt_service(db, current.id, req)
 
 
 @router.put("/prompts/{pid}", response_model=PromptLibraryOut)

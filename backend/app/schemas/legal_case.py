@@ -7,7 +7,6 @@ AI 相似度总结（第四步填充）。
 from __future__ import annotations
 
 from datetime import date
-from typing import Any
 from uuid import UUID
 
 from pydantic import BaseModel, Field

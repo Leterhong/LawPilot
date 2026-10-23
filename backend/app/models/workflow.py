@@ -9,13 +9,12 @@ from __future__ import annotations
 from datetime import datetime
 
 from sqlalchemy import (
-    Enum,
+    JSON,
     Boolean,
     DateTime,
+    Enum,
     ForeignKey,
     Index,
-    JSON,
-    String,
     Text,
     func,
 )

@@ -8,7 +8,6 @@ from __future__ import annotations
 from typing import Tuple
 
 from sqlalchemy import func, or_, select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.enums import LegalSourceEnum
 from app.models.knowledge import Knowledge

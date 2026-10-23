@@ -316,17 +316,54 @@ function ReportPane({ caseObj }: { caseObj: CaseOut }) {
     </Card>
   );
 
+  // 生成溯源：区分「AI 个性化分析」与「规则模板」，并对引用编号做可视化标注
+  const meta = r.meta;
+  const isLlm = meta?.analysis_source === "llm";
+  const citedSet = new Set(meta?.cited_articles ?? []);
+
   return (
     <div className="space-y-4">
+      {meta && (
+        <Card className="flex flex-wrap items-center gap-2 text-xs">
+          <Badge tone={isLlm ? "brand" : "gray"}>
+            {isLlm ? "AI 个性化分析" : "规则模板生成"}
+          </Badge>
+          <span className="text-gray-500 dark:text-gray-400">
+            基于 {meta.fact_count} 条您陈述的事实 · 核验 {meta.citation_count} 条法条
+            {citedSet.size > 0 ? ` · 实际引用第 ${[...citedSet].sort((a, b) => a - b).join("、")} 条` : ""}
+          </span>
+          {!isLlm && (
+            <span className="text-gray-400">
+              （当前由规则模板生成，内容同样经过法条校验）
+            </span>
+          )}
+        </Card>
+      )}
+
       <Section title="案件类型">{r.case_type}</Section>
+      {r.facts && r.facts.length > 0 && (
+        <Section title="事实梳理（源自您的陈述）">
+          <ul className="space-y-1 text-gray-600 dark:text-gray-300">
+            {r.facts.map((f, i) => (
+              <li key={i} className="flex gap-2">
+                <span className="text-gray-300 dark:text-gray-600">{i + 1}.</span>
+                <span>{f.replace(/^-\s*/, "")}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
       <Section title="一句话结论">{r.conclusion}</Section>
       <Section title="涉及法律（RAG 检索）">
         <p className="whitespace-pre-wrap">{r.legal.markdown}</p>
         {r.legal.citations.length > 0 && (
           <ul className="mt-2 space-y-1 text-xs text-gray-500 dark:text-gray-400">
-            {r.legal.citations.map((c) => (
-              <li key={c.id}>
-                · {c.label}（{c.source}）{c.snippet ? `：${c.snippet}` : ""}
+            {r.legal.citations.map((c, idx) => (
+              <li key={c.id} className="flex flex-wrap items-center gap-1">
+                {citedSet.has(idx + 1) && <Badge tone="brand">已引用</Badge>}
+                <span>
+                  · {c.label}（{c.source}）{c.snippet ? `：${c.snippet}` : ""}
+                </span>
               </li>
             ))}
           </ul>
@@ -340,6 +377,11 @@ function ReportPane({ caseObj }: { caseObj: CaseOut }) {
           <p className="mb-1">已上传：{r.evidence.uploaded.join("、")}</p>
         )}
         <p>建议清单：{r.evidence.checklist.join("、")}</p>
+        {r.evidence.advice && (
+          <p className="mt-2 rounded-xl bg-brand-50 p-3 text-xs text-brand-700 dark:bg-brand-500/10 dark:text-brand-300">
+            针对本案：{r.evidence.advice}
+          </p>
+        )}
       </Section>
       <Section title="下一步怎么办">
         <ol className="list-decimal space-y-1 pl-5">

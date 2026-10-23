@@ -20,7 +20,6 @@ from app.models.task import Task
 from app.repositories.roadmap_repo import RoadmapRepository, RoadmapStepRepository
 from app.repositories.task_repo import HistoryRepository, TaskRepository
 
-
 # 步骤模板：(标题, 说明, 建议第N天执行)
 _STEPS: dict[str, list[tuple[str, str, int | None]]] = {
     "rent": [
@@ -88,7 +87,7 @@ class RoadmapService:
         # 3) 创建步骤与对应任务
         base_date = datetime.now()
         for order, (title, desc, offset) in enumerate(template, start=1):
-            step = await self.steps.create(
+            await self.steps.create(
                 roadmap_id=roadmap.id,
                 title=title,
                 description=desc,

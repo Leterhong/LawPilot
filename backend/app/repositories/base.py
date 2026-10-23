@@ -5,12 +5,11 @@
 """
 from __future__ import annotations
 
-from typing import Any, Generic, Sequence, TypeVar
+from typing import Any, Generic, TypeVar
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import DeclarativeBase
-
 
 ModelType = TypeVar("ModelType", bound=DeclarativeBase)
 

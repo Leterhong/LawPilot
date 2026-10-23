@@ -29,18 +29,18 @@ Step5 端点（报告生成，声明在 /{evidence_id} 之前以免被 UUID 通�
 from __future__ import annotations
 
 import os
-
-from fastapi import APIRouter, Depends, File, HTTPException, Query, status, UploadFile
-from fastapi.responses import FileResponse
-from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
+
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
+from fastapi.responses import FileResponse
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import get_db
-from app.core.deps import get_current_user, require_superuser
+from app.core.deps import get_current_user
 from app.models.enums import EvidenceFileStatusEnum
 from app.models.evidence_center import EvidenceAnalysis, EvidenceFile, EvidenceReport
-from sqlalchemy import select
 from app.models.user import User
 from app.schemas.common import Page
 from app.schemas.evidence_center import (

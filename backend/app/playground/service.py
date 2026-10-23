@@ -7,14 +7,13 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.ai_center import AIModel, Provider, RoutingRule
+from app.models.ai_center import RoutingRule
 from app.models.playground import (
     ModelComparison,
     PlaygroundPublish,
@@ -23,12 +22,11 @@ from app.models.playground import (
 from app.playground.benchmark import estimate_cost
 from app.playground.scorer import judge_one
 from app.schemas.playground import (
-    ChatResultOut,
     CompareRowOut,
-    PlaygroundPublishOut,
-    PlaygroundSessionOut,
     PlaygroundCompareRequest,
+    PlaygroundPublishOut,
     PlaygroundPublishRequest,
+    PlaygroundSessionOut,
     PlaygroundTestRequest,
 )
 from app.services.ai.manager import AIManager, ChatResult
@@ -205,7 +203,8 @@ async def publish_to_production(
         await db.scalars(select(RoutingRule).where(RoutingRule.feature == req.feature))
     ).first()
     if rule is None:
-        from fastapi import HTTPException, status as http_status
+        from fastapi import HTTPException
+        from fastapi import status as http_status
 
         raise HTTPException(
             status_code=http_status.HTTP_404_NOT_FOUND,

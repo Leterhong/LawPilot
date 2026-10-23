@@ -21,9 +21,9 @@ ai_explanation / ai_summary）默认 NULL，由 ResearchService 在详情/批量
 from __future__ import annotations
 
 import enum
-import uuid
 from datetime import date
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     Boolean,
     Computed,
@@ -38,7 +38,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.config import settings
 from app.models.base import Base, TimestampMixin, UUIDMixin
-from pgvector.sqlalchemy import Vector
 
 
 class ResearchDocType(str, enum.Enum):

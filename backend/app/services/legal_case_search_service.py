@@ -16,6 +16,7 @@ from app.models.legal_case import LegalCase
 from app.models.user import User
 from app.repositories.law_repo import LawRepository
 from app.repositories.legal_case_repo import LegalCaseRepository
+from app.schemas.law import LawOut
 from app.schemas.legal_case import (
     CaseFilterFacets,
     FacetItem,
@@ -25,7 +26,6 @@ from app.schemas.legal_case import (
     LegalCaseSearchResult,
     SimilarCaseRequest,
 )
-from app.schemas.law import LawOut
 from app.services.case_center_service import CaseCenterService
 from app.services.llm.client import LLMClient
 from app.services.rag.reranker import RerankerService

@@ -20,6 +20,7 @@ from typing import List, Optional, Tuple
 from uuid import UUID
 
 from sqlalchemy import or_, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.models.enums import LegalSourceEnum
@@ -27,7 +28,6 @@ from app.models.knowledge import Knowledge
 from app.models.legal_reference import LegalReference
 from app.services.rag.embedder import EmbeddingService
 from app.services.rag.reranker import RerankerService
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 @dataclass

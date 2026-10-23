@@ -17,10 +17,12 @@ from __future__ import annotations
 
 import uuid
 from datetime import date
+from typing import TYPE_CHECKING
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
-    Date,
     Computed,
+    Date,
     ForeignKey,
     Index,
     String,
@@ -33,7 +35,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.core.config import settings
 from app.models.base import Base, TimestampMixin, UUIDMixin
 from app.models.enums import CourtLevelEnum, LegalCaseTypeEnum
-from pgvector.sqlalchemy import Vector
+
+if TYPE_CHECKING:  # 仅类型检查期导入，避免与 user 模型形成循环导入
+    from app.models.user import User
 
 
 class LegalCase(UUIDMixin, TimestampMixin, Base):

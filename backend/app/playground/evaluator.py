@@ -12,7 +12,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.ai_center import AIModel, PromptTemplate
+from app.models.ai_center import PromptTemplate
 from app.models.playground import (
     EvaluationItem,
     EvaluationResult,
@@ -51,7 +51,8 @@ async def run_evaluation(
     elif req.items:
         items = [(it.input, it.expected, it.context, None) for it in req.items]
     if not items:
-        from fastapi import HTTPException, status as http_status
+        from fastapi import HTTPException
+        from fastapi import status as http_status
 
         raise HTTPException(
             status_code=http_status.HTTP_400_BAD_REQUEST,

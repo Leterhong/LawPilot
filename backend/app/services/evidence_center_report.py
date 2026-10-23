@@ -806,8 +806,8 @@ def render_pdf(blocks: list[dict], title: str) -> bytes | None:
         from reportlab.pdfbase import pdfmetrics
         from reportlab.pdfbase.ttfonts import TTFont
         from reportlab.platypus import (
-            SimpleDocTemplate,
             Paragraph,
+            SimpleDocTemplate,
             Spacer,
             Table,
             TableStyle,

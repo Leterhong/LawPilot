@@ -27,19 +27,18 @@ from __future__ import annotations
 import json
 import time
 from dataclasses import dataclass, field
-from datetime import date, datetime
-from decimal import Decimal
-from typing import Any, Optional, Sequence
+from datetime import date
+from typing import Any
 from uuid import UUID
 
 import httpx
-from openai import AsyncOpenAI
 from openai import (
     APIConnectionError,
     APITimeoutError,
+    AsyncOpenAI,
     RateLimitError,
 )
-from sqlalchemy import desc, func, select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from tenacity import (
     retry,
@@ -314,7 +313,8 @@ class AIManager:
         route = await self._resolve(feature, "rerank")
         if not route.has_key or not route.model_name:
             return None
-        client = _get_client(route.base_url, route.api_key, route.timeout)
+        # rerank 走标准 HTTP 接口，无需构造 OpenAI 客户端（历史上曾多造一个未使用的
+        # 客户端对象，纯属开销，已移除）
         payload = {
             "model": route.model_name,
             "query": query,

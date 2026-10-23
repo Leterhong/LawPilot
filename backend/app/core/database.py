@@ -67,8 +67,9 @@ async def init_db() -> None:
     以将表注册到 ``Base.metadata``。
     """
     # 导入模型模块，将全部表注册到 Base.metadata
-    from app import models  # noqa: F401
     from sqlalchemy import text
+
+    from app import models  # noqa: F401
 
     async with engine.begin() as conn:
         # 确保向量扩展存在（无则创建；已存在则忽略）

@@ -15,14 +15,15 @@ from datetime import date
 from typing import List, Optional, Tuple
 from uuid import UUID
 
-from sqlalchemy import and_, case as sa_case, or_, select
+from sqlalchemy import and_, or_, select
+from sqlalchemy import case as sa_case
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.research import RESEARCH_TABLES
-from app.services.rag.embedder import EmbeddingService
 
 # 复用 legal_cases 的中文分词（bigram 提升召回）
 from app.repositories.legal_case_repo import _tokenize  # noqa: F401
+from app.services.rag.embedder import EmbeddingService
 
 _RRF_K = 60
 _CANDIDATE_CAP = 60
@@ -238,7 +239,11 @@ class ResearchRepository:
         stmt = select(model)
         if conds:
             stmt = stmt.where(and_(*conds))
-        score = sa_case((model.title.ilike(f"%{raw}%"), 3), else_=0) if raw else sa_case((model.is_current == True, 1), else_=0)  # noqa: E711
+        score = (
+            sa_case((model.title.ilike(f"%{raw}%"), 3), else_=0)
+            if raw
+            else sa_case((model.is_current.is_(True), 1), else_=0)
+        )
         for t in terms:
             score = score + sa_case((model.title.ilike(f"%{t}%"), 2), else_=0)
             score = score + sa_case(

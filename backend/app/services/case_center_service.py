@@ -24,8 +24,6 @@ from app.models.enums import (
     CaseCenterStatusEnum,
     CaseTypeEnum,
     DocStatusEnum,
-    DocTypeEnum,
-    EvidenceCategoryEnum,
     PriorityEnum,
     TaskStatusEnum,
 )

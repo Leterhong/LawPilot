@@ -6,6 +6,7 @@
 """
 from __future__ import annotations
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     JSON,
     String,
@@ -16,7 +17,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.core.config import settings
 from app.models.base import Base, TimestampMixin, UUIDMixin
 from app.models.enums import LegalSourceEnum
-from pgvector.sqlalchemy import Vector
 
 
 class LegalReference(UUIDMixin, TimestampMixin, Base):

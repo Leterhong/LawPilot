@@ -4,7 +4,43 @@
 ``Base.metadata``（Alembic 自动生成迁移、init_db 建表都依赖完整元数据）。
 新增模型后请在此追加导入。
 """
+from app.models.ai_center import (  # noqa: F401
+    AIModel,
+    ModelHealth,
+    ModelLog,
+    ModelUsage,
+    PromptTemplate,
+    PromptVersion,
+    Provider,
+    RoutingRule,
+)
 from app.models.base import Base, TimestampMixin, UUIDMixin  # noqa: F401
+from app.models.case import Case  # noqa: F401
+from app.models.case_center import (  # noqa: F401
+    CaseAnalysis,
+    CaseCenter,
+    CaseDocument,
+    CaseEvidence,
+    CaseNote,
+    CaseTask,
+    CaseTimeline,
+)
+from app.models.contract import (  # noqa: F401
+    CONTRACT_ALLOWED_EXTENSIONS,
+    CONTRACT_REMINDER_CATEGORIES,
+    CONTRACT_REPORT_TYPES,
+    CONTRACT_RISK_CATEGORIES,
+    CONTRACT_RISK_LEVELS,
+    CONTRACT_STATUS,
+    CONTRACT_TASK_TYPES,
+    CONTRACT_TYPE_LABELS,
+    CONTRACT_TYPES,
+    Contract,
+    ContractClause,
+    ContractReport,
+    ContractRisk,
+)
+from app.models.document import Document  # noqa: F401
 from app.models.enums import (  # noqa: F401
     CaseCenterStatusEnum,
     CaseStatusEnum,
@@ -21,76 +57,7 @@ from app.models.enums import (  # noqa: F401
     TaskStatusEnum,
     WorkflowStageEnum,
 )
-from app.models.user import User  # noqa: F401
-from app.models.case import Case  # noqa: F401
-from app.models.message import Message  # noqa: F401
-from app.models.document import Document  # noqa: F401
 from app.models.evidence import Evidence  # noqa: F401
-from app.models.roadmap import Roadmap, RoadmapStep  # noqa: F401
-from app.models.legal_reference import LegalReference  # noqa: F401
-from app.models.workflow import Workflow  # noqa: F401
-from app.models.task import Task  # noqa: F401
-from app.models.history import History  # noqa: F401
-from app.models.knowledge import Knowledge  # noqa: F401
-from app.models.law import Law, LawStatusEnum  # noqa: F401
-from app.models.law_search_history import LawSearchHistory  # noqa: F401
-from app.models.case_center import (  # noqa: F401
-    CaseAnalysis,
-    CaseCenter,
-    CaseDocument,
-    CaseEvidence,
-    CaseNote,
-    CaseTask,
-    CaseTimeline,
-)
-from app.models.legal_case import (  # noqa: F401
-    LegalCase,
-    LegalCaseFavorite,
-)
-from app.models.research import (  # noqa: F401
-    LegalDocument,
-    JudicialInterpretation,
-    DepartmentRule,
-    LocalRegulation,
-    Guideline,
-    Policy,
-)
-from app.models.ai_center import (  # noqa: F401
-    Provider,
-    AIModel,
-    RoutingRule,
-    PromptTemplate,
-    PromptVersion,
-    ModelUsage,
-    ModelLog,
-    ModelHealth,
-)
-from app.models.playground import (  # noqa: F401
-    PlaygroundSession,
-    ModelComparison,
-    EvaluationDataset,
-    EvaluationItem,
-    EvaluationTask,
-    EvaluationResult,
-    PromptLibrary,
-    ModelPricing,
-    PlaygroundPublish,
-)
-from app.models.contract import (  # noqa: F401
-    Contract,
-    ContractRisk,
-    ContractClause,
-    ContractReport,
-    CONTRACT_TYPES,
-    CONTRACT_TYPE_LABELS,
-    CONTRACT_RISK_CATEGORIES,
-    CONTRACT_RISK_LEVELS,
-    CONTRACT_STATUS,
-    CONTRACT_TASK_TYPES,
-    CONTRACT_REMINDER_CATEGORIES,
-    CONTRACT_REPORT_TYPES,
-    CONTRACT_ALLOWED_EXTENSIONS,
-)
 from app.models.evidence_center import (  # noqa: F401
     EvidenceAnalysis,
     EvidenceFile,
@@ -98,6 +65,39 @@ from app.models.evidence_center import (  # noqa: F401
     EvidenceReport,
     EvidenceTimelineNode,
 )
+from app.models.history import History  # noqa: F401
+from app.models.knowledge import Knowledge  # noqa: F401
+from app.models.law import Law, LawStatusEnum  # noqa: F401
+from app.models.law_search_history import LawSearchHistory  # noqa: F401
+from app.models.legal_case import (  # noqa: F401
+    LegalCase,
+    LegalCaseFavorite,
+)
+from app.models.legal_reference import LegalReference  # noqa: F401
+from app.models.message import Message  # noqa: F401
+from app.models.playground import (  # noqa: F401
+    EvaluationDataset,
+    EvaluationItem,
+    EvaluationResult,
+    EvaluationTask,
+    ModelComparison,
+    ModelPricing,
+    PlaygroundPublish,
+    PlaygroundSession,
+    PromptLibrary,
+)
+from app.models.research import (  # noqa: F401
+    DepartmentRule,
+    Guideline,
+    JudicialInterpretation,
+    LegalDocument,
+    LocalRegulation,
+    Policy,
+)
+from app.models.roadmap import Roadmap, RoadmapStep  # noqa: F401
+from app.models.task import Task  # noqa: F401
+from app.models.user import User  # noqa: F401
+from app.models.workflow import Workflow  # noqa: F401
 
 __all__ = [
     "Base",

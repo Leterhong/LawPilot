@@ -155,7 +155,8 @@ class AgentEngine:
 
         report_generated = False
         if decision.is_complete:
-            await build_and_persist_report(case, self.session)
+            # 传入 wf，使报告引擎能读取 collected_fields 生成个性化分析
+            await build_and_persist_report(case, self.session, wf)
             report_generated = True
             case.status = CaseStatusEnum.IN_PROGRESS
             case.current_stage = WorkflowStageEnum.REPORT.value

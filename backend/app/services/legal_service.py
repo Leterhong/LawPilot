@@ -8,11 +8,6 @@ Phase 3 提供关键词/类型检索（keyword_search）；Phase 5 新增混合�
 """
 from __future__ import annotations
 
-from typing import List, Tuple
-
-from app.models.enums import LegalSourceEnum
-from app.models.knowledge import Knowledge
-from app.models.legal_reference import LegalReference
 from app.repositories.legal_repo import KnowledgeRepository, LegalReferenceRepository
 from app.schemas.legal import LegalSearchQuery, RetrievedChunkOut
 from app.services.rag.citations import build_citations

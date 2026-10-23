@@ -14,7 +14,7 @@ from fastapi import UploadFile
 
 from app.core.config import settings
 from app.models.case import Case
-from app.models.enums import EvidenceCategoryEnum, EventTypeEnum
+from app.models.enums import EventTypeEnum, EvidenceCategoryEnum
 from app.models.evidence import Evidence
 from app.models.user import User
 from app.repositories.case_repo import EvidenceRepository
@@ -94,8 +94,8 @@ class EvidenceService:
         """从文件中提取文本（图片 OCR / 文本类文件）。失败返回 None。"""
         try:
             if ext in (".png", ".jpg", ".jpeg"):
-                from PIL import Image
                 import pytesseract
+                from PIL import Image
 
                 return pytesseract.image_to_string(Image.open(path)).strip() or None
             if ext == ".txt":

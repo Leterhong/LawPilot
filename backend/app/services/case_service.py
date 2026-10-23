@@ -26,8 +26,8 @@ from app.repositories.case_repo import (
     WorkflowRepository,
 )
 from app.repositories.task_repo import HistoryRepository
-from app.schemas.common import Page
 from app.schemas.case import CaseOut, CaseUpdate
+from app.schemas.common import Page
 
 
 class CaseService:

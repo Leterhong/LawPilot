@@ -14,14 +14,13 @@ from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.repositories.research_repo import ResearchRepository
 from app.repositories.legal_case_repo import _tokenize  # 复用中文分词
+from app.repositories.research_repo import ResearchRepository
 from app.schemas.research import (
     CATEGORY_LABELS,
     DOC_TYPE_LABELS,
     RelatedDocRef,
     ResearchDocDetail,
-    ResearchFacetItem,
     ResearchRecommendResult,
     ResearchSearchItem,
     ResearchSearchResult,

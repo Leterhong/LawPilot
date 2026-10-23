@@ -8,9 +8,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.core.deps import get_current_user, get_owned_case
+from app.core.deps import get_owned_case
 from app.models.case import Case
-from app.models.roadmap import Roadmap, RoadmapStep
 from app.repositories.roadmap_repo import RoadmapRepository, RoadmapStepRepository
 from app.schemas.roadmap import RoadmapOut, RoadmapStepOut, RoadmapStepUpdate
 from app.services.roadmap_service import RoadmapService

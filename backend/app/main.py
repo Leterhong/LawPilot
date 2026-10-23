@@ -15,16 +15,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 
-from app.api.v1 import api_router
-from app.api.laws import router as laws_router
+from app.api.ai_center import router as ai_center_router
 from app.api.case_center import router as case_center_router
+from app.api.laws import router as laws_router
 from app.api.legal_cases import router as legal_cases_router
 from app.api.research import router as research_router
-from app.api.ai_center import router as ai_center_router
-from app.playground.router import router as playground_router
+from app.api.v1 import api_router
 from app.contract.router import router as contract_router
 from app.core.config import settings
 from app.core.database import init_db
+from app.playground.router import router as playground_router
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("lawpilot")
@@ -34,10 +34,17 @@ logger = logging.getLogger("lawpilot")
 async def lifespan(app: FastAPI):
     """应用生命周期管理。
 
-    启动：开发环境下自动建表（生产请用 Alembic 迁移）。
+    启动：生产环境先做配置自检（不安全则拒绝启动），开发环境自动建表。
     关闭：释放引擎连接池。
     """
     logger.info("LawPilot 后端启动中… 环境=%s", settings.environment)
+
+    problems = settings.validate_for_production()
+    if problems:
+        detail = "；".join(problems)
+        logger.error("生产环境配置自检未通过，拒绝启动：%s", detail)
+        raise RuntimeError(f"生产环境配置不安全：{detail}")
+
     if settings.environment == "development":
         try:
             await init_db()
@@ -82,6 +89,11 @@ app = FastAPI(
     ),
     lifespan=lifespan,
     openapi_tags=TAGS_METADATA,
+    # 生产环境默认不暴露文档（见 Settings.docs_enabled），
+    # 如需开启请显式设置 EXPOSE_DOCS=true 并在网关层做访问控制。
+    docs_url="/docs" if settings.docs_enabled else None,
+    redoc_url="/redoc" if settings.docs_enabled else None,
+    openapi_url="/openapi.json" if settings.docs_enabled else None,
 )
 
 
@@ -94,6 +106,7 @@ def custom_openapi() -> dict:
         version=app.version,
         description=app.description,
         routes=app.routes,
+        tags=TAGS_METADATA,
     )
     components = schema.setdefault("components", {})
     components.setdefault("securitySchemes", {})["BearerAuth"] = {

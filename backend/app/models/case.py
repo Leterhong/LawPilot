@@ -9,14 +9,13 @@ from __future__ import annotations
 from datetime import datetime
 
 from sqlalchemy import (
-    Enum,
-    DateTime,
     JSON,
+    DateTime,
+    Enum,
     ForeignKey,
     Index,
     String,
     Text,
-    func,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 

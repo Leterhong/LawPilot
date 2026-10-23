@@ -11,10 +11,10 @@ from __future__ import annotations
 import time
 from datetime import date, datetime
 from decimal import Decimal
-from uuid import UUID, uuid4
+from uuid import UUID
 
 import httpx
-from sqlalchemy import Date, DateTime, desc, func, select
+from sqlalchemy import desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -38,13 +38,13 @@ from app.schemas.ai_center import (
     ModelHealthOut,
     ModelLogOut,
     ModelUsageRow,
-    ProviderCreate,
-    ProviderOut,
-    ProviderUpdate,
     PromptTemplateCreate,
     PromptTemplateOut,
     PromptTemplateUpdate,
     PromptVersionOut,
+    ProviderCreate,
+    ProviderOut,
+    ProviderUpdate,
     RoutingRuleCreate,
     RoutingRuleOut,
     RoutingRuleUpdate,
@@ -781,23 +781,23 @@ class AICenterService:
         model_names = await self._model_name_map()
         out = [
             ModelLogOut(
-                id=l.id,
-                model_id=l.model_id,
-                model_name=model_names.get(str(l.model_id)) if l.model_id else None,
-                provider_id=l.provider_id,
-                user_id=l.user_id,
-                feature=l.feature,
-                endpoint=l.endpoint,
-                capability=l.capability,
-                tokens_in=l.tokens_in,
-                tokens_out=l.tokens_out,
-                cost=l.cost,
-                latency_ms=l.latency_ms,
-                status=l.status,
-                error_text=l.error_text,
-                created_at=l.created_at,
+                id=log.id,
+                model_id=log.model_id,
+                model_name=model_names.get(str(log.model_id)) if log.model_id else None,
+                provider_id=log.provider_id,
+                user_id=log.user_id,
+                feature=log.feature,
+                endpoint=log.endpoint,
+                capability=log.capability,
+                tokens_in=log.tokens_in,
+                tokens_out=log.tokens_out,
+                cost=log.cost,
+                latency_ms=log.latency_ms,
+                status=log.status,
+                error_text=log.error_text,
+                created_at=log.created_at,
             )
-            for l in rows
+            for log in rows
         ]
         return out, total
 

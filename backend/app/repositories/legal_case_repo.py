@@ -8,14 +8,13 @@
 from __future__ import annotations
 
 import re
-from datetime import date, datetime, timedelta
-from typing import List, Optional, Sequence, Tuple
+from datetime import date, timedelta
+from typing import List, Optional, Tuple
 
-from sqlalchemy import String, and_, case as sa_case, cast, func, or_, select
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import and_, or_, select
+from sqlalchemy import case as sa_case
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.enums import CourtLevelEnum, LegalCaseTypeEnum
 from app.models.legal_case import LegalCase, LegalCaseFavorite
 from app.services.rag.embedder import EmbeddingService
 

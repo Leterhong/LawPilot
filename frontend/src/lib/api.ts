@@ -129,6 +129,8 @@ export interface LegalCitation {
 export interface CaseReport {
   case_type: string;
   conclusion: string;
+  /** 事实梳理：由逐条追问收集到的结构化事实还原而成（v1.1 新增） */
+  facts?: string[];
   legal: {
     query: string;
     markdown: string;
@@ -137,7 +139,7 @@ export interface CaseReport {
   };
   rights: string;
   counterparty_issues: string;
-  evidence: { uploaded: string[]; checklist: string[] };
+  evidence: { uploaded: string[]; checklist: string[]; advice?: string };
   next_steps: {
     order: number;
     title: string;
@@ -152,6 +154,14 @@ export interface CaseReport {
     complexity: string;
     limitation: string;
     suggestion: string;
+  };
+  /** 生成溯源：用于界面上标注本报告的生成方式与引用轨迹（v1.1 新增） */
+  meta?: {
+    analysis_source: "llm" | "template";
+    fallback_reason: string;
+    cited_articles: number[];
+    fact_count: number;
+    citation_count: number;
   };
   disclaimer: string;
   generated_at: string;

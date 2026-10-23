@@ -6,8 +6,8 @@
 from __future__ import annotations
 
 from sqlalchemy import (
-    Enum,
     Boolean,
+    Enum,
     ForeignKey,
     Index,
     String,

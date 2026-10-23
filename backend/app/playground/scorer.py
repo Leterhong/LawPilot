@@ -7,12 +7,10 @@
 from __future__ import annotations
 
 import json
-
 from uuid import UUID
 
 from app.models.playground import SCORE_DIMS
 from app.services.ai.manager import AIManager
-
 
 _JUDGE_SYSTEM = (
     "你是一位严谨的法律 AI 评测专家。请根据给定维度，对「被测模型的回答」进行客观打分。"

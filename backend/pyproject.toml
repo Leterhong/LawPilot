@@ -21,7 +21,9 @@ dependencies = [
     "httpx>=0.28.0",
     "python-jose[cryptography]>=3.3.0",
     "passlib[bcrypt]>=1.7.4",
-    "bcrypt>=4.1.0,<4.2",
+    # 与 requirements.txt 保持一致：bcrypt 4.1+ 移除 __about__，与 passlib 1.7.4 不兼容
+    # （注册/登录会 500）。此处必须与 requirements.txt 同为 <4.1。
+    "bcrypt>=4.0.0,<4.1",
     "python-multipart>=0.0.12",
     "openai>=1.54.0",
     "pgvector>=0.3.0",
@@ -47,6 +49,9 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W"]
+# E501（行超长）不纳入 CI 阻断：本仓库大量中文注释与长法条字符串无法自动折行，
+# 交由 ruff format 统一处理可格式化的部分。其余规则保持全量开启。
+ignore = ["E501"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

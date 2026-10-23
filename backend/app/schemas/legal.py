@@ -9,7 +9,6 @@ Phase 5（RAG）新增：
 from __future__ import annotations
 
 from uuid import UUID
-from typing import Any
 
 from pydantic import BaseModel, Field
 

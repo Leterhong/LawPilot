@@ -8,6 +8,7 @@ from __future__ import annotations
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.deps import get_current_user, require_superuser
@@ -19,13 +20,13 @@ from app.schemas.ai_center import (
     AIModelUpdate,
     ModelHealthOut,
     ModelLogOut,
-    ProviderCreate,
-    ProviderOut,
-    ProviderUpdate,
     PromptTemplateCreate,
     PromptTemplateOut,
     PromptTemplateUpdate,
     PromptVersionOut,
+    ProviderCreate,
+    ProviderOut,
+    ProviderUpdate,
     RoutingRuleCreate,
     RoutingRuleOut,
     RoutingRuleUpdate,
@@ -33,7 +34,6 @@ from app.schemas.ai_center import (
     TestConnectionResult,
 )
 from app.services.ai_center_service import AICenterService
-from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/api/ai", tags=["ai-center"])
 
