@@ -1,4 +1,4 @@
-"""生成《LawPilot 项目计划书》DOCX。
+"""生成《明路 项目计划书》DOCX。
 
 以 docs/competition/_template/知引GEO项目计划书.docx 的版式为模板，
 仅替换正文、页眉、页脚与文档属性，保证两份参赛材料排版完全一致。
@@ -9,7 +9,7 @@
 用法：
     python scripts/build_plan_docx.py
 产物：
-    docs/competition/LawPilot项目计划书.docx
+    docs/competition/明路项目计划书.docx
 """
 from __future__ import annotations
 
@@ -20,9 +20,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = ROOT / "docs" / "competition" / "_template" / "知引GEO项目计划书.docx"
-OUTPUT = ROOT / "docs" / "competition" / "LawPilot项目计划书.docx"
+OUTPUT = ROOT / "docs" / "competition" / "明路项目计划书.docx"
 
-HEADER_TEXT = "LawPilot    项目计划书"
+HEADER_TEXT = "明路    项目计划书"
 FOOTER_TEXT = "2026 年 10 月 23 日"
 
 BORDER = (
@@ -152,21 +152,22 @@ def tbl(grid: list[int], header: list[str], rows: list[list[str]]) -> None:
 
 
 # ===== 封面 =====
-title("LawPilot 项目计划书")
+title("明路 项目计划书")
 subtitle("面向普通人的 AI 法律办事助手，从一句话描述到可执行的维权路线图")
 meta("个人版  |  参赛与试点沟通  |  2026 年 10 月")
 
 # ===== 一 项目概述 =====
 h1("一  项目概述", new_page=False)
 para(
-    "LawPilot 是面向普通人的 AI 法律办事助手。服务对象是遇到房屋租赁、劳动报酬、消费维权、"
+    "明路是面向普通人的 AI 法律办事助手。服务对象是遇到房屋租赁、劳动报酬、消费维权、"
     "民间借贷、婚姻家庭、医疗损害、快递物流等常见纠纷，请不起律师、也不知道该找哪个部门的个人。"
     "用户用日常语言描述发生了什么，系统通过追问补全关键事实，检索现行法律条文，"
     "输出一份包含“我的权益”“对方可能存在的问题”“要准备什么证据”“下一步去哪办”的案件报告，"
     "并据此起草可直接使用的文书。项目不代理诉讼，也不出具法律意见。",
-    "项目名为 LawPilot，取“领航”之意：不替用户打官司，而是把一段混乱的纠纷陈述，"
-    "翻译成一条有先后顺序、有承办部门、有材料清单的办事路径。名称为暂定品牌，"
-    "商业注册前另行核查可用性。",
+    "项目名为“明路”，取自中文里“指条明路”的说法：不替用户打官司，而是把一段混乱的纠纷陈述，"
+    "翻译成一条有先后顺序、有承办部门、有材料清单的办事路径。品牌句为“纠纷有明路”，"
+    "强调的是路径清楚，而不是结果承诺。英文名 LawPilot 保留为开源仓库与技术项目名，"
+    "对外品牌统一使用“明路”。名称为暂定品牌，正式使用前需完成商标与域名核查。",
 )
 h2("项目提供的核心价值")
 para(
@@ -428,7 +429,7 @@ def build() -> None:
         footer = z.read("word/footer1.xml").decode("utf-8")
         footer = re.sub(r"<w:t[^>]*>[^<]*</w:t>", f'<w:t xml:space="preserve">{FOOTER_TEXT}</w:t>', footer, count=1)
         core = z.read("docProps/core.xml").decode("utf-8")
-        core = re.sub(r"<dc:title>[^<]*</dc:title>", "<dc:title>LawPilot 项目计划书</dc:title>", core)
+        core = re.sub(r"<dc:title>[^<]*</dc:title>", "<dc:title>明路 项目计划书</dc:title>", core)
 
         OUTPUT.parent.mkdir(parents=True, exist_ok=True)
         tmp = OUTPUT.with_suffix(".tmp.docx")
