@@ -79,3 +79,9 @@ docker-compose.override.yml
 # 生成脚本 scripts/build_plan_docx.py 依赖该模板，本地自备
 # -------------------------------
 docs/competition/_template/
+
+# -------------------------------
+# 视频生成中间产物（旁白、逐帧图、时间轴）
+# -------------------------------
+.tmp_video/
+.tmp_ref/
